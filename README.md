@@ -3,6 +3,9 @@ I've made some small code modifications to enable installing the llm-d stack wit
 All you have to do is use additional flag when running the standup/teardown script: 
 ``` --non-admin```, or its shortcut ```-i``` (there were no letters left...).
 
+You may see logs such as ```Error from server (Forbidden):``` but don't worry about them - these will not terminate your run.
+I made the smallest possible changed to avoid the script failure and didn't fix every part that may output an unpleasant log.
+
 Here are exactly the commands you need to execute in order to deploy llm-d stack on your cluster:
 
 *Note: most of them are literally written here below, but I added few things that will hopefully help you avoid some problems along the way*
@@ -36,7 +39,7 @@ For the first run I suggest to just update the namespace, and provide HF token (
 
 5. Run the script:
 ```
-./setup/standup.sh -n -c "$(pwd)/setup/example_env.sh" --non-admin
+./setup/standup.sh -c "$(pwd)/setup/example_env.sh" --non-admin
 ```
 That's it!
 
@@ -76,7 +79,7 @@ job.batch/download-model   Complete   1/1           27s        2m19s
 
 For teardown run:
 ```
-./setup/teardown.sh -n -c "$(pwd)/setup/example_env.sh" --non-admin
+./setup/teardown.sh -c "$(pwd)/setup/example_env.sh" --non-admin
 ```
 
 ## `llm-d`-benchmark
