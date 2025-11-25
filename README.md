@@ -1,3 +1,84 @@
+# Dear AI Platform team 🔥
+I've made some small code modifications to enable installing the llm-d stack with **no admin privileges** :))
+All you have to do is use additional flag when running the standup/teardown script: 
+``` --non-admin```, or its shortcut ```-i``` (there were no letters left...).
+
+Here are exactly the commands you need to execute in order to deploy llm-d stack on your cluster:
+
+*Note: most of them are literally written here below, but I added few things that will hopefully help you avoid some problems along the way*
+
+1. Clone my repo
+```
+git clone https://github.com/NaomiEisen/llm-d-benchmark.git
+cd llm-d-benchmark
+```
+
+2. Optional but helpful: create a python virtual environment
+```
+python3 -m venv venv
+source venv/bin/activate
+```
+
+*Note: You can always deactivate by running:*
+```deactivate```
+
+3. Set up your environment:
+```
+./setup/install_deps.sh
+```
+
+4. Update the ```/setup/example_env.sh```:
+This file contains configuration for your run. You can edit it as you wish, 
+but I suggest keeping the minimum configs I included there. Also, **do not delete this variable:**
+```LLMDBENCH_VLLM_GAIE_CHART_NAME```,or at least provide another chart, as the default doesn't work (looks like the llm-d-benchmark people are aware of this).
+
+For the first run I suggest to just update the namespace, and provide HF token (you can ask me - maybe I'll share mine 😉)
+
+5. Run the script:
+```
+./setup/standup.sh -n -c "$(pwd)/setup/example_env.sh" --non-admin
+```
+That's it!
+
+Assuming you didn't change the configs, you should have these resources in your cluster:
+```
+oc get all
+Warning: apps.openshift.io/v1 DeploymentConfig is deprecated in v4.14+, unavailable in v4.10000+
+NAME                                                      READY   STATUS              RESTARTS   AGE
+pod/access-to-harness-data-workload-pvc                   1/1     ContainerCreating   0          88s
+pod/download-model-9lczq                                  0/1     Completed           0          2m17s
+pod/infra-llmdbench-inference-gateway-586f4b6664-xhcs6    1/1     Running             0          75s
+pod/qwen-qwe-c3a61186-en3-0-6b-decode-9889dcc89-d7qlq     2/2     Running             0          45s
+pod/qwen-qwe-c3a61186-en3-0-6b-gaie-epp-f5c97c6c8-k7hsc   1/1     Running             0          60s
+pod/qwen-qwe-c3a61186-en3-0-6b-prefill-5f4f5f9bc4-pb7xc   1/1     Running             0          45s
+
+NAME                                                  TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+service/infra-llmdbench-inference-gateway             NodePort    172.30.255.239   <none>        80:31882/TCP                 76s
+service/llm-d-benchmark-harness                       ClusterIP   172.30.109.23    <none>        20873/TCP                    89s
+service/qwen-qwe-c3a61186-en3-0-6b-gaie-epp           ClusterIP   172.30.61.226    <none>        9002/TCP,9090/TCP,5557/TCP   62s
+service/qwen-qwe-c3a61186-en3-0-6b-gaie-ip-5e80028e   ClusterIP   None             <none>        54321/TCP                    61s
+
+NAME                                                  READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/infra-llmdbench-inference-gateway     1/1     1            1           76s
+deployment.apps/qwen-qwe-c3a61186-en3-0-6b-decode     1/1     1            1           46s
+deployment.apps/qwen-qwe-c3a61186-en3-0-6b-gaie-epp   1/1     1            1           62s
+deployment.apps/qwen-qwe-c3a61186-en3-0-6b-prefill    1/1     1            1           46s
+
+NAME                                                            DESIRED   CURRENT   READY   AGE
+replicaset.apps/infra-llmdbench-inference-gateway-586f4b6664    1         1         1       76s
+replicaset.apps/qwen-qwe-c3a61186-en3-0-6b-decode-9889dcc89     1         1         1       46s
+replicaset.apps/qwen-qwe-c3a61186-en3-0-6b-gaie-epp-f5c97c6c8   1         1         1       61s
+replicaset.apps/qwen-qwe-c3a61186-en3-0-6b-prefill-5f4f5f9bc4   1         1         1       46s
+
+NAME                       STATUS     COMPLETIONS   DURATION   AGE
+job.batch/download-model   Complete   1/1           27s        2m19s
+```
+
+For teardown run:
+```
+./setup/teardown.sh -n -c "$(pwd)/setup/example_env.sh" --non-admin
+```
+
 ## `llm-d`-benchmark
 
 This repository provides an automated workflow for benchmarking LLM inference using the `llm-d` stack. It includes tools for deployment, experiment execution, data collection, and teardown across multiple environments and deployment styles.
