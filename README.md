@@ -13,8 +13,8 @@ Here are exactly the commands you need to execute in order to deploy llm-d stack
 1. Clone my repo and switch to the `non-admin-standup` branch
 ```
 git clone https://github.com/NaomiEisen/llm-d-benchmark.git
-git switch non-admin-standup
 cd llm-d-benchmark
+git switch non-admin-standup
 ```
 
 2. Optional but helpful: create a python virtual environment
