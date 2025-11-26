@@ -1,14 +1,14 @@
 # Dear AI Platform team 🔥
 I've made some small code modifications to enable installing the llm-d stack with **no admin privileges** :))
-All you have to do is use additional flag when running the standup/teardown script: 
+All you have to do is use an additional flag when running the standup/teardown script: 
 ``` --non-admin```, or its shortcut ```-i``` (there were no letters left...).
 
 You may see logs such as ```Error from server (Forbidden):``` but don't worry about them - these will not terminate your run.
-I made the smallest possible changed to avoid the script failure and didn't fix every part that may output an unpleasant log.
+I made the smallest possible changes to avoid the script failure and didn't fix every part that may output an unpleasant log.
 
 Here are exactly the commands you need to execute in order to deploy llm-d stack on your cluster:
 
-*Note: most of them are literally written here below, but I added few things that will hopefully help you avoid some problems along the way*
+*Note: most of them are literally written here below, but I added a few things that will hopefully help you avoid some problems along the way*
 
 1. Clone my repo and switch to the `non-admin-standup` branch
 ```
