@@ -1,5 +1,5 @@
 # Dear AI Platform team 🔥
-I've made some small code modifications to enable installing the llm-d stack with **no admin privileges** :))
+I've made some small code modifications to enable installing the llm-d stack with **no cluster-level admin privileges** :))
 All you have to do is use an additional flag when running the standup/teardown script: 
 ``` --non-admin```, or its shortcut ```-i``` (there were no letters left...).
 
